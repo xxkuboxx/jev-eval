@@ -1,12 +1,12 @@
 # ステップ 0: 共通データセット取得・分割の詳細実装計画書
 
-本ドキュメントは、[`docs/experiment_plan.md`](docs/experiment_plan.md) で定義された **ステップ 0 (`00_dataset/`)** の詳細な実装計画書です。すべての後続モデル実験（LightGBM、DeBERTa、Gemini、Jev）の土台となる高品質な共通データセットの取得、検証、および分割処理の具体的な手順を定義します。
+本ドキュメントは、[`docs/experiment_plan.md`](docs/experiment_plan.md) で定義された **ステップ 0 (`00_dataset/`)** の詳細な実装計画書です。すべての後続モデル実験（LightGBM、DistilBERT、Gemini、Jev）の土台となる高品質な共通データセットの取得、検証、および分割処理の具体的な手順を定義します。
 
 ---
 
 ## 1. 目的と概要
 
-- **目的**: Hugging Face Hub上の `tanaos/synthetic-intent-classfier-dataset` データセットを取得し、再現性を確保した上でシャッフル・分割を行い、後続の各ステップ（`01_lightgbm/`, `02_deberta/`, `03_gemini_flash_lite/`, `04_jev/`）が入力として利用できるように `train.csv` (70%) と `test.csv` (30%) として保存する。
+- **目的**: Hugging Face Hub上の `tanaos/synthetic-intent-classfier-dataset` データセットを取得し、再現性を確保した上でシャッフル・分割を行い、後続の各ステップ（`01_lightgbm/`, `02_distilbert/`, `03_gemini_flash_lite/`, `04_jev/`）が入力として利用できるように `train.csv` (70%) と `test.csv` (30%) として保存する。
 - **参照すべきスキル**: [`huggingface-datasets`](../../.agents/skills/huggingface-datasets/SKILL.md) （データセットの検証・ビューアAPI活用・メタデータ確認）
 
 ---
@@ -59,7 +59,7 @@ graph TD
     B -->|70% 分割| C[00_dataset/output/train.csv]
     B -->|30% 分割| D[00_dataset/output/test.csv]
     C --> E[01_lightgbm input]
-    C --> F[02_deberta input]
+    C --> F[02_distilbert input]
     D --> E
     D --> F
     D --> G[03_gemini_flash_lite input]
