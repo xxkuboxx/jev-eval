@@ -26,6 +26,9 @@ jobs:
     - name: Install dependencies
       run: uv sync --frozen
 
+    - name: Generate dataset
+      run: uv run python 00_dataset/script/dataset.py
+
     - name: Run ruff check
       run: uv run ruff check --exclude .agents/skills .
 
