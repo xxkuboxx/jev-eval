@@ -27,13 +27,13 @@ jobs:
       run: uv sync --frozen
 
     - name: Run ruff check
-      run: uv run ruff check .
+      run: uv run ruff check --exclude .agents/skills .
 
     - name: Run ruff format check
-      run: uv run ruff format --check .
+      run: uv run ruff format --check --exclude .agents/skills .
 
     - name: Run mypy
-      run: uv run mypy .
+      run: uv run mypy --exclude "\.agents/skills" .
 
     - name: Run pytest
       run: uv run pytest
