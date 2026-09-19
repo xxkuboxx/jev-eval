@@ -135,8 +135,13 @@ with TypeSafeClient() as client:
                 },
             ),
             # Speculative: only used when the ticket is a bug report.
-            "severity": Score(instructions="How severe is the issue reported in `ticket`?", criteria=SEVERITY),
-            "refund_requested": Noul(instructions="Does `ticket` explicitly ask for a refund or credit?"),
+            "severity": Score(
+                instructions="How severe is the issue reported in `ticket`?",
+                criteria=SEVERITY,
+            ),
+            "refund_requested": Noul(
+                instructions="Does `ticket` explicitly ask for a refund or credit?"
+            ),
         },
     )
 

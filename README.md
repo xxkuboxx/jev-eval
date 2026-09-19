@@ -11,7 +11,11 @@ jev-eval/
 │   ├── output/                  # train.csv (70%), test.csv (30%)
 │   ├── script/                  # dataset.py (データ取得・分割スクリプト)
 │   └── tests/                   # test_dataset.py (単体テスト)
-├── 01_lightgbm/                 # ステップ1: LightGBMモデル実験
+├── 01_lightgbm/                 # ステップ1: LightGBMモデル実験 (TF-IDF + LightGBM)
+│   ├── input/                   # train.csv, test.csv
+│   ├── output/                  # model.pkl, predictions.csv, metrics.json
+│   ├── script/                  # train.py, evaluate.py
+│   └── tests/                   # test_lightgbm.py
 ├── 02_deberta/                  # ステップ2: DeBERTaモデル実験
 ├── 03_gemini_flash_lite/        # ステップ3: Gemini Flash Liteモデル実験
 ├── 04_jev/                      # ステップ4: Jevモデル実験
@@ -28,14 +32,18 @@ jev-eval/
    uv run python 00_dataset/script/dataset.py
    ```
 
-2. **テストの実行**
-   データセットの品質および形式の検証を行います。
+2. **ステップ 1: LightGBM 実験の実行**
    ```bash
-   uv run pytest
+   # 学習
+   uv run python 01_lightgbm/script/train.py
+
+   # 推論・評価
+   uv run python 01_lightgbm/script/evaluate.py
    ```
 
-3. **リント・型チェックの実行**
+3. **テストおよび品質チェックの実行**
    ```bash
+   uv run pytest
    uv run ruff check .
    uv run ruff format --check .
    uv run mypy .

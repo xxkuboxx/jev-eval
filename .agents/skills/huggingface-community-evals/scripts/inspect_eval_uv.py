@@ -18,16 +18,15 @@ import os
 import subprocess
 import sys
 from pathlib import Path
-from typing import Optional
 
 
-def _inspect_evals_tasks_root() -> Optional[Path]:
+def _inspect_evals_tasks_root() -> Path | None:
     """Return the installed inspect_evals package path if available."""
     try:
         import inspect_evals
 
         return Path(inspect_evals.__file__).parent
-    except Exception:
+    except ImportError:
         return None
 
 
@@ -44,7 +43,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Inspect-ai job runner")
     parser.add_argument("--model", required=True, help="Model ID on Hugging Face Hub")
     parser.add_argument("--task", required=True, help="inspect-ai task to execute")
-    parser.add_argument("--limit", type=int, default=None, help="Limit number of samples to evaluate")
+    parser.add_argument(
+        "--limit", type=int, default=None, help="Limit number of samples to evaluate"
+    )
     parser.add_argument(
         "--tasks-root",
         default=None,
@@ -64,7 +65,9 @@ def main() -> None:
         os.environ.setdefault("HF_HUB_TOKEN", hf_token)
 
     task = _normalize_task(args.task)
-    tasks_root = Path(args.tasks_root) if args.tasks_root else _inspect_evals_tasks_root()
+    tasks_root = (
+        Path(args.tasks_root) if args.tasks_root else _inspect_evals_tasks_root()
+    )
     if tasks_root and not tasks_root.exists():
         tasks_root = None
 
@@ -95,10 +98,12 @@ def main() -> None:
         print("Evaluation complete.")
     except subprocess.CalledProcessError as exc:
         location = f" (cwd={tasks_root})" if tasks_root else ""
-        print(f"Evaluation failed with exit code {exc.returncode}{location}", file=sys.stderr)
+        print(
+            f"Evaluation failed with exit code {exc.returncode}{location}",
+            file=sys.stderr,
+        )
         raise
 
 
 if __name__ == "__main__":
     main()
-

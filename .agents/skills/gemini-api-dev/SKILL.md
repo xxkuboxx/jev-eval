@@ -67,8 +67,7 @@ from google import genai
 client = genai.Client()
 
 interaction = client.interactions.create(
-    model="gemini-3.8-flash",
-    input="Tell me a short joke about programming."
+    model="gemini-3.8-flash", input="Tell me a short joke about programming."
 )
 print(interaction.output_text)
 ```
@@ -101,14 +100,13 @@ The SDK provides convenience properties on the `Interaction` response object to 
 ### Python
 ```python
 interaction1 = client.interactions.create(
-    model="gemini-3.8-flash",
-    input="Hi, my name is Phil."
+    model="gemini-3.8-flash", input="Hi, my name is Phil."
 )
 # Second turn — server remembers context
 interaction2 = client.interactions.create(
     model="gemini-3.8-flash",
     input="What is my name?",
-    previous_interaction_id=interaction1.id
+    previous_interaction_id=interaction1.id,
 )
 print(interaction2.output_text)
 ```
@@ -138,7 +136,7 @@ import time
 interaction = client.interactions.create(
     agent="deep-research-preview-04-2026",
     input="Research the history of Google TPUs.",
-    background=True
+    background=True,
 )
 while True:
     interaction = client.interactions.get(interaction.id)
