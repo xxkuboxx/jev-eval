@@ -29,7 +29,6 @@ import argparse
 import os
 import subprocess
 import sys
-from typing import Optional
 
 
 def setup_environment() -> None:
@@ -43,7 +42,7 @@ def setup_environment() -> None:
 def run_inspect_vllm(
     model_id: str,
     task: str,
-    limit: Optional[int] = None,
+    limit: int | None = None,
     max_connections: int = 4,
     temperature: float = 0.0,
     tensor_parallel_size: int = 1,
@@ -112,7 +111,7 @@ def run_inspect_vllm(
 def run_inspect_hf(
     model_id: str,
     task: str,
-    limit: Optional[int] = None,
+    limit: int | None = None,
     max_connections: int = 1,
     temperature: float = 0.001,
     device: str = "auto",

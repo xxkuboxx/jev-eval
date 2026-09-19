@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "datasets>=5.0.1",
+    "joblib>=1.6.0",
+    "lightgbm>=4.7.0",
     "mypy>=2.3.1",
     "pandas>=3.0.6",
     "pandas-stubs>=3.0.5.260914",
@@ -14,3 +16,6 @@ dependencies = [
     "scikit-learn>=1.9.1",
     "types-setuptools>=84.0.0.20260812",
 ]
+
+[tool.mypy]
+ignore_missing_imports = true
