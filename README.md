@@ -6,6 +6,7 @@
 
 ```text
 jev-eval/
+├── .github/workflows/ci.yml       # GitHub Actions CI (Ruff, Mypy, Pytest)
 ├── 00_dataset/                  # ステップ0: 共通データセットの取得と分割
 │   ├── output/                  # train.csv (70%), test.csv (30%)
 │   ├── script/                  # dataset.py (データ取得・分割スクリプト)
@@ -30,5 +31,12 @@ jev-eval/
 2. **テストの実行**
    データセットの品質および形式の検証を行います。
    ```bash
-   uv run pytest 00_dataset/tests/test_dataset.py
+   uv run pytest
+   ```
+
+3. **リント・型チェックの実行**
+   ```bash
+   uv run ruff check .
+   uv run ruff format --check .
+   uv run mypy .
    ```
