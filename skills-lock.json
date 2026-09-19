@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "skills": {
+    "gemini-api-dev": {
+      "source": "google-gemini/gemini-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gemini-api-dev/SKILL.md",
+      "computedHash": "3311a3dd2abc2133f3748c8b47f257f78e35d5b2adc517af32b80e7a3af39434"
+    },
+    "huggingface-community-evals": {
+      "source": "huggingface/skills",
+      "sourceType": "github",
+      "skillPath": "skills/huggingface-community-evals/SKILL.md",
+      "computedHash": "32eec43c4c176086132aefee5377b47e98095727289f128492da697dccbc1598"
+    },
+    "huggingface-datasets": {
+      "source": "huggingface/skills",
+      "sourceType": "github",
+      "skillPath": "skills/huggingface-datasets/SKILL.md",
+      "computedHash": "d28d1ee4a61133ab6c1e12c74094681c2026c7e656784bd09831f91618fd0120"
+    },
+    "jev": {
+      "source": "dbreunig/building-with-jev-skill",
+      "sourceType": "github",
+      "skillPath": "skills/jev/SKILL.md",
+      "computedHash": "db6e5636b00baadb7060fd462dd22c3793e9ce7ac94500f50ea7fcc81c480eb4"
+    }
+  }
+}
