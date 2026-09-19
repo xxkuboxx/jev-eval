@@ -1,6 +1,6 @@
 # 意図分類モデル評価 実験計画書
 
-本実験は、`tanaos/synthetic-intent-classfier-dataset` データセットを使用し、4つのモデル（**LightGBM**、**DeBERTa**、**gemini-3.5-flash-lite**、**jev**）の分類性能（マルチクラス ROC-AUC Macro-average）およびレスポンス性能（平均レイテンシ）を評価・比較するための実験計画書です。
+本実験は、`tanaos/synthetic-intent-classfier-dataset` データセットを使用し、4つのモデル（**LightGBM**、**DistilBERT**、**gemini-3.5-flash-lite**、**jev**）の分類性能（マルチクラス ROC-AUC Macro-average）およびレスポンス性能（平均レイテンシ）を評価・比較するための実験計画書です。
 
 実験環境および依存関係の管理には、Pythonの **`uv`** を使用して高速かつ再現性高く整備します。
 
@@ -24,9 +24,9 @@ jev-eval/
 │   ├── tmp/                     # 一時ファイル（チェックポイント等）
 │   ├── output/                  # model.pkl, predictions.csv, metrics.json
 │   └── script/                  # train.py, evaluate.py
-├── 02_deberta/                  # ステップ2: DeBERTaモデル実験
+├── 02_distilbert/               # ステップ2: DistilBERTモデル実験
 │   ├── input/                   # 00_dataset/output/ へのシンボリックリンク (train.csv, test.csv)
-│   ├── tmp/                     # 一時ファイル（DeBERTa中間チェックポイント等）
+│   ├── tmp/                     # 一時ファイル（DistilBERT中間チェックポイント等）
 │   ├── output/                  # model_weights/, predictions.csv, metrics.json
 │   └── script/                  # train.py, evaluate.py
 ├── 03_gemini_flash_lite/        # ステップ3: Gemini Flash Liteモデル実験
@@ -73,6 +73,18 @@ jev-eval/
 
 ---
 
+## モデル実験ステップの共通ルール（README.md の記載事項）
+
+モデル実験の各ステップ（`01_lightgbm/`, `02_distilbert/`, `03_gemini_flash_lite/`, `04_jev/` 等）では、実装完了後に必ず各ステップのトップ階層に `README.md` を作成または最新の状態に更新してください。`README.md` には以下の内容を必ず記載することとします：
+
+1. **モデル構成**: 使用したアルゴリズム、ハイパーパラメータ、モデル名、プロンプト設計などの詳細。
+2. **学習データ数 / テストデータ数**: 使用したデータセットのサンプル数および入力パス。
+3. **トレーニング実績**: 所要時間、学習ログや初期化に関する特記事項（学習データがある場合）。
+4. **評価指標**: マルチクラス ROC-AUC (Macro-average) および平均推論レイテンシ（ms/sample）。
+5. **画面やコマンドからの確認方法**: 実装した機能やテスト、推論結果をどのように実行・確認するか具体的なコマンド例。
+
+---
+
 ## ステップ 1: LightGBM モデルの評価 (`01_lightgbm/`)
 
 - **目的**: 従来型機械学習（TF-IDF + LightGBM）による分類性能とレイテンシの計測。
@@ -86,13 +98,13 @@ jev-eval/
 
 ---
 
-## ステップ 2: DeBERTa モデルの評価 (`02_deberta/`)
+## ステップ 2: DistilBERT モデルの評価 (`02_distilbert/`)
 
-- **目的**: Transformerベース（`microsoft/deberta-v3-small`）のローカルGPUファインチューニングによる性能検証。
+- **目的**: Transformerベース（`distilbert/distilbert-base-uncased`）のローカルGPUファインチューニングによる性能検証。
 
 ### 実行手順:
-1. ローカルNVIDIA GPU環境下で、`input/` 内の `train.csv` を用いて `microsoft/deberta-v3-small` のファインチューニングを実施する（`script/train.py`）。
-2. モデル重みを `02_deberta/output/model_weights/` に保存する。
+1. ローカルNVIDIA GPU環境下で、`input/` 内の `train.csv` を用いて `distilbert/distilbert-base-uncased` のファインチューニングを実施する（`script/train.py`）。
+2. モデル重みを `02_distilbert/output/model_weights/` に保存する。
 3. `input/` 内の `test.csv` を読み込み、推論を実行する（`script/evaluate.py`）。
 4. 推論結果を `output/predictions.csv` として保存する。
 5. `script/evaluate.py` 内において、使用するライブラリ（`scikit-learn` または `PyTorch` / `transformers` 関連関数）を用いてマルチクラス **ROC-AUC（Macro-average）** および平均レイテンシを独自に計算し、結果を `output/metrics.json` に保存する。
