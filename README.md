@@ -65,7 +65,17 @@ jev-eval/
    uv run python 03_gemini_flash_lite/script/evaluate.py
    ```
 
-3. **テストおよび品質チェックの実行**
+5. **ステップ 4: Jev 実験の実行**
+   ```bash
+   # .env に TYPESAFE_API_KEY を設定してください
+   # 動作確認用スモークテスト（先頭10サンプルのみ・結果保存なし）
+   uv run python 04_jev/script/evaluate.py --smoke
+
+   # 本番推論・評価 (ThreadPoolExecutor 並行処理・個別JSONキャッシュレジューム・指数バックオフリトライ & Fail-Fast対応)
+   uv run python 04_jev/script/evaluate.py
+   ```
+
+6. **テストおよび品質チェックの実行**
    ```bash
    uv run pytest
    uv run ruff check .
