@@ -81,9 +81,9 @@ jev-eval/
 
 ---
 
-## モデル実験ステップの共通ルール（README.md の記載事項・実装規約）
+## モデル実験ステップの共通ルール（トップ階層 README.md への集約・実装規約）
 
-モデル実験の各ステップ（`01_lightgbm/`, `02_distilbert/`, `03_gemini_flash_lite/`, `04_jev/` 等）では、実装完了後に必ず各ステップのトップ階層に `README.md` を作成または最新の状態に更新してください。`README.md` には以下の内容を必ず記載することとします：
+各モデル実験ステップ（`01_lightgbm/`, `02_distilbert/`, `03_gemini_flash_lite/`, `04_jev/` 等）の実装完了後は、個別の階層ではなくプロジェクトのトップ階層にある [`README.md`](../README.md) にすべての実験詳細と評価実績を集約・統一して最新の状態に更新してください。[`README.md`](../README.md) には以下の内容を必ず記載することとします：
 
 1. **モデル構成**: 使用したアルゴリズム、ハイパーパラメータ、モデル名、プロンプト/スキーマ設計、Jev質問設計などの詳細。
 2. **学習データ数 / テストデータ数**: 使用したデータセットのサンプル数および入力パス。
@@ -175,7 +175,10 @@ jev-eval/
 
 - **目的**: 各ステップの成果物を集約し、全モデル（LightGBM, DistilBERT, Gemini 3.5 Flash Lite, Jev）の性能比較と考察を行う。
 
-### 実行手順:
-1. `input/` 内のシンボリックリンク経由で各モデルの `output/metrics.json` を読み込む（`script/compare.py`）。
-2. ROC-AUC スコアと平均レイテンシの一覧テーブルを作成する。
-3. 精度と速度のトレードオフ（パレートフロンティア分析）、および各モデルの長所・短所（コスト、ローカル実行要件、並行処理性能など）を分析し、最終レポートを `output/comparison_report.md` として出力する。
+### 実装・運用設計（[`docs/step5_implementation_plan.md`](step5_implementation_plan.md) 準拠）:
+1. `input/` 内のシンボリックリンク経由で各モデルの `output/metrics.json` および `predictions.csv` を読み込む（`script/compare.py`）。
+2. **Fail First（早期クラッシュ）原則の徹底**: ファイル欠損、必須キー欠落、NaN/Inf/Null の混入、サンプル数不整合が検知された場合、デフォルト値での穴埋めや例外握りつぶしを一切行わず、即座に例外を送出して異常終了させ、データの捏造を構造的に防止。
+3. ROC-AUC スコア、Accuracy、Macro-F1、平均・パーセンタイルレイテンシ（p50, p90, p99）の一覧テーブルを作成する。
+4. 推論コスト（API従量課金モデル: Gemini Flash-Lite vs Jev のトークン単価・出力トークン$0、およびサーバーデプロイ型: LightGBM/DistilBERT の固定費モデル）の比較評価を行う。
+5. 精度と速度のトレードオフ（パレートフロンティア分析）、および各モデルの長所・短所（コスト、ローカル実行要件、並行処理性能など）を分析し、最終レポートを `output/comparison_report.md` および `output/summary_metrics.json` として出力する。
+6. `05_summary/tests/test_compare.py` にて、パレートフロンティア抽出ロジック、データロード・集計処理、推論コストカタログ、および Fail First 異常系検証を含む E2E 単体テストを網羅する。
