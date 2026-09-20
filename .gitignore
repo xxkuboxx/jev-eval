@@ -1,0 +1,47 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.pytest_cache
+.ruff_cache
+.mypy_cache
+
+# Virtual environments
+.venv
+
+# Experiment outputs, temporary files, and downloaded datasets
+**/output/
+**/tmp/
+**/input/
+input/
+
+# Environment and Secrets
+.env
+.env.*
+!.env.sample
+
+# Model weights and artifacts
+*.joblib
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.onnx
+
+# Editor and IDE configurations
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# OS-generated files
+.DS_Store
+Thumbs.db

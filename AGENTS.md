@@ -1,0 +1,8 @@
+# AGENTS Rules
+
+- Always consult the available skills before utilizing internal knowledge, prioritizing skill instructions.
+- Ensure implementation includes corresponding tests simultaneously.
+- Always update the top-level `README.md` to the latest state upon completion of implementation.
+- Run `ruff check`, `ruff format`, `mypy`, and `pytest` to ensure zero errors across linting, type-checking, and tests.
+- When creating implementation plans for experiments or feature steps, include precise references to skills, required libraries, exact file structures, and complete code snippets (training/evaluation scripts and tests).
+- Never read or expose files containing API keys or secrets (such as `.env`) during execution or logging.
