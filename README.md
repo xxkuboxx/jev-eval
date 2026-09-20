@@ -51,7 +51,19 @@ jev-eval/
    ```
    *※ NVIDIA GPU (GTX 1050 等の Pascal 世代) の場合、FP16 演算による性能劣化や NaN を避けるため FP32 で動作し、動的パディングと実効バッチサイズ 32（バッチサイズ 16 × 勾配累積ステップ 2）に最適化されています。*
    *※ PyTorch は PyTorch 公式 CUDA 12.4 インデックス (`https://download.pytorch.org/whl/cu124`) より管理されています。*
-   *※各モデル実験ステップ（`01_lightgbm/`, `02_distilbert/`, `03_gemini_flash_lite/`, `04_jev/` 等）の実装完了後には、必ず各ステップのトップ階層に [`README.md`](01_lightgbm/README.md:1) を作成・更新します（詳細は [`docs/experiment_plan.md`](docs/experiment_plan.md:1) を参照）。*
+
+4. **ステップ 3: Gemini Flash Lite 実験の実行**
+   ```bash
+   # .env.sample を基に .env ファイルを作成し、APIキーを設定するか、環境変数を設定してください
+   cp .env.sample .env
+   # または export GEMINI_API_KEY="your-api-key"
+
+   # 動作確認用スモークテスト（先頭10サンプルのみ・結果保存なし）
+   uv run python 03_gemini_flash_lite/script/evaluate.py --smoke
+
+   # 本番推論・評価 (HTTPリトライ機構対応: 最大10回試行、初期遅延10秒、最大遅延100秒、指数バックオフ base=1.5、ジッター0.5)
+   uv run python 03_gemini_flash_lite/script/evaluate.py
+   ```
 
 3. **テストおよび品質チェックの実行**
    ```bash
